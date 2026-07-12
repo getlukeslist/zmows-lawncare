@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M1944CJYP1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M1944CJYP1');
+  </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="format-detection" content="telephone=no">
@@ -473,6 +481,19 @@ img { display: block; }
 </div>
 
 <script>
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(link){
+    link.addEventListener('click', function(){
+      if (typeof gtag === 'function') {
+        gtag('event', 'call_click', {
+          event_category: 'engagement',
+          event_label: link.getAttribute('href')
+        });
+      }
+    });
+  });
+</script>
+
+<script>
   (function(){
     var revealEls = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window)) {
@@ -525,6 +546,12 @@ img { display: block; }
         })
       }).then(function(res){
         if (!res.ok) throw new Error('Send failed');
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            event_category: 'engagement',
+            event_label: service
+          });
+        }
         btn.textContent = 'Request Sent \u2713';
         statusEl.textContent = "Thanks! Joe will get back to you, usually the same day.";
         document.getElementById('q-name').value = '';
