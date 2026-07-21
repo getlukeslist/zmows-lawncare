@@ -141,11 +141,15 @@ img { display: block; }
 
 /* REVIEWS — auto-scrolling marquee */
 .reviews-viewport {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   cursor: pointer;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
+.reviews-viewport::-webkit-scrollbar { display: none; }
 .reviews {
   display: flex; gap: 26px; align-items: stretch; width: max-content;
   animation: reviews-scroll 20s linear infinite;
@@ -484,7 +488,24 @@ img { display: block; }
 <script>
   var reviewsViewport = document.querySelector('.reviews-viewport');
   if (reviewsViewport) {
+    var swipeStartX = 0;
+    var wasDragging = false;
+
+    reviewsViewport.addEventListener('touchstart', function(e){
+      swipeStartX = e.touches[0].clientX;
+      wasDragging = false;
+    }, { passive: true });
+
+    reviewsViewport.addEventListener('touchmove', function(e){
+      var dx = Math.abs(e.touches[0].clientX - swipeStartX);
+      if (dx > 10 && !wasDragging) {
+        wasDragging = true;
+        reviewsViewport.classList.add('is-paused');
+      }
+    }, { passive: true });
+
     reviewsViewport.addEventListener('click', function(){
+      if (wasDragging) { wasDragging = false; return; }
       reviewsViewport.classList.toggle('is-paused');
     });
   }
