@@ -142,14 +142,15 @@ img { display: block; }
 /* REVIEWS — auto-scrolling marquee */
 .reviews-viewport {
   overflow: hidden;
+  cursor: pointer;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 .reviews {
   display: flex; gap: 26px; align-items: stretch; width: max-content;
-  animation: reviews-scroll 42s linear infinite;
+  animation: reviews-scroll 20s linear infinite;
 }
-.reviews-viewport:hover .reviews { animation-play-state: paused; }
+.reviews-viewport.is-paused .reviews { animation-play-state: paused; }
 @keyframes reviews-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -477,8 +478,17 @@ img { display: block; }
 <div class="footer">
   <div class="footer-mark">Z-Mows Lawn Care &middot; Joe Zmolik</div>
   <div class="footer-contact">Mabank, TX <span>&bull;</span> <a href="tel:9727621962" style="color:#9fac9d; text-decoration:none;">972-762-1962</a></div>
-  <div class="footer-copy">&copy; 2026 Z-Mows Lawn Care &middot; Site by Luke's List Business Solutions</div>
+  <div class="footer-copy">&copy; 2026 Z-Mows Lawn Care</div>
 </div>
+
+<script>
+  var reviewsViewport = document.querySelector('.reviews-viewport');
+  if (reviewsViewport) {
+    reviewsViewport.addEventListener('click', function(){
+      reviewsViewport.classList.toggle('is-paused');
+    });
+  }
+</script>
 
 <script>
   document.querySelectorAll('a[href^="tel:"]').forEach(function(link){
