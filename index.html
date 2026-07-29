@@ -473,6 +473,10 @@ img { display: block; }
         <label for="q-message">Tell Joe about the job</label>
         <textarea id="q-message" name="Message" placeholder="Lot size, what needs done, anything helpful..."></textarea>
       </div>
+      <div class="field" style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true">
+        <label for="q-company">Company</label>
+        <input type="text" id="q-company" name="_honey" tabindex="-1" autocomplete="off">
+      </div>
       <button class="form-btn" type="button" id="q-submit-btn">Request My Free Quote</button>
       <div class="form-note" id="q-form-status">Prefer to talk? Call or text <a href="tel:9727621962">972-762-1962</a></div>
     </div>
@@ -549,6 +553,9 @@ img { display: block; }
     var originalStatus = statusEl.innerHTML;
     if (!btn) return;
     btn.addEventListener('click', function(){
+      var honey = document.getElementById('q-company').value.trim();
+      if (honey) { return; } // bot filled the hidden field — silently drop
+
       var name = document.getElementById('q-name').value.trim();
       var phone = document.getElementById('q-phone').value.trim();
       var email = document.getElementById('q-email').value.trim();
