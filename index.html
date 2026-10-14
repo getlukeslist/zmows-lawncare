@@ -347,14 +347,25 @@ img { display: block; }
 .xmas-sign-cta {
   margin: 6px 0 0 20px; /* lines up under the lettering: bulb 8px + gap 12px */
   font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; line-height: 1.45;
-  color: #f6ecd8;
+  color: #ff5a4f;
+  /* Faint static red glow. Kept this low on purpose: a stronger red glow lightens
+     the background behind the letters and drops contrast below 4.5:1. */
+  text-shadow: 0 0 4px rgba(255,90,79,0.15), 0 0 10px rgba(255,90,79,0.08);
+  position: relative; isolation: isolate;
+}
+/* Soft dark shading behind this line only (blurred, no visible box) so the red
+   measures at least 4.5:1 against the brightest part of the hero photo. */
+.xmas-sign-cta::before {
+  content: ""; position: absolute; inset: -4px -12px; z-index: -1;
+  background: rgba(7,13,9,0.85); filter: blur(10px); border-radius: 12px;
+  pointer-events: none;
 }
 .xmas-sign-cta-text {
   text-decoration: underline; text-decoration-thickness: 1px;
-  text-decoration-color: rgba(255,231,176,0.5); text-underline-offset: 4px;
+  text-decoration-color: rgba(255,90,79,0.6); text-underline-offset: 4px;
 }
-.xmas-badge:hover .xmas-sign-cta { color: #ffffff; }
-.xmas-badge:hover .xmas-sign-cta-text { text-decoration-color: rgba(255,231,176,0.9); }
+.xmas-badge:hover .xmas-sign-cta { color: #ff8a80; }
+.xmas-badge:hover .xmas-sign-cta-text { text-decoration-color: rgba(255,138,128,0.9); }
 .xmas-sign-text {
   font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;
   font-size: 28px; line-height: 1.2; color: #ffe7b0;
@@ -383,7 +394,7 @@ img { display: block; }
 }
 @media (prefers-reduced-motion: reduce) {
   .xmas-bulb, .xmas-sign-bulb { animation: none; }
-  .xmas-sign-text { text-shadow: none; }
+  .xmas-sign-text, .xmas-sign-cta { text-shadow: none; }
 }
 /* ===== CHRISTMAS PROMO END ===== */
 </style>
