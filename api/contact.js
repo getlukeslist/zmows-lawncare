@@ -16,6 +16,11 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+// Basic shape check: one @, no spaces or line breaks, and a dot in the domain.
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -82,6 +87,7 @@ Message: ${show(message)}`;
         subject: 'New quote request - Z Mows Lawn Care',
         html,
         text,
+        ...(isValidEmail(email) && { reply_to: email }),
       }),
     });
 
