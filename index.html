@@ -580,8 +580,16 @@ img { display: block; }
       var service = document.getElementById('q-service').value;
       var message = document.getElementById('q-message').value.trim();
 
-      if (!name || (!phone && !email)) {
+      if (!name) {
         statusEl.textContent = 'Please add your name and a phone number or email so Joe can reach you.';
+        return;
+      }
+
+      // Same rule as api/contact.js: a phone with 7+ digits or a valid email.
+      var phoneOk = phone.replace(/\D/g, '').length >= 7;
+      var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!phoneOk && !emailOk) {
+        statusEl.textContent = 'Please add a phone number or a valid email so Joe can reach you.';
         return;
       }
 

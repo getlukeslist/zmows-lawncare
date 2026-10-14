@@ -21,6 +21,11 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+// At least 7 digits, ignoring spaces, dashes, parentheses, etc.
+function isValidPhone(value) {
+  return value.replace(/\D/g, '').length >= 7;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -47,8 +52,8 @@ module.exports = async function handler(req, res) {
     const service = clean(body['Service Needed'], MAX_LEN['Service Needed']);
     const message = clean(body.Message, MAX_LEN.Message);
 
-    if (!name || (!phone && !email)) {
-      return res.status(400).json({ error: 'Name and a phone number or email are required' });
+    if (!name || !(isValidPhone(phone) || isValidEmail(email))) {
+      return res.status(400).json({ error: 'Name and a phone number or valid email are required' });
     }
 
     const apiKey = process.env.RESEND_API_KEY;
