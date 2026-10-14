@@ -336,12 +336,25 @@ img { display: block; }
   50% { opacity: 0.35; }
 }
 
-/* Hero sign: lit-window lettering with a red bulb left and a green bulb right.
+/* Hero sign: lit-window lettering with a red bulb left and a green bulb right,
+   then a plain call-to-action line under it. The whole thing is one link.
    The glow is a static text-shadow (painted once); only the bulbs animate, opacity only. */
 .xmas .xmas-badge {
-  display: inline-flex; align-items: center; gap: 12px; max-width: 100%;
+  display: inline-flex; flex-direction: column; align-items: flex-start; max-width: 100%;
   margin-bottom: 18px;
 }
+.xmas-sign-row { display: flex; align-items: center; gap: 12px; max-width: 100%; }
+.xmas-sign-cta {
+  margin: 6px 0 0 20px; /* lines up under the lettering: bulb 8px + gap 12px */
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; line-height: 1.45;
+  color: #f6ecd8;
+}
+.xmas-sign-cta-text {
+  text-decoration: underline; text-decoration-thickness: 1px;
+  text-decoration-color: rgba(255,231,176,0.5); text-underline-offset: 4px;
+}
+.xmas-badge:hover .xmas-sign-cta { color: #ffffff; }
+.xmas-badge:hover .xmas-sign-cta-text { text-decoration-color: rgba(255,231,176,0.9); }
 .xmas-sign-text {
   font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;
   font-size: 28px; line-height: 1.2; color: #ffe7b0;
@@ -362,7 +375,8 @@ img { display: block; }
   .xmas .xmas-strip { font-size: 13px; }
   .xmas-bulb:nth-child(even) { display: none; }
   .xmas-sign-text { font-size: 22px; }
-  .xmas .xmas-badge { gap: 10px; }
+  .xmas-sign-row { gap: 10px; }
+  .xmas-sign-cta { margin-left: 18px; font-size: 14px; }
 }
 @media (max-width: 360px) {
   .xmas-sign-text { font-size: 20px; }
@@ -442,7 +456,7 @@ img { display: block; }
 <div class="hero" id="top">
   <div class="hero-inner">
     <!-- ===== CHRISTMAS PROMO START: badge ===== -->
-    <a class="xmas-badge" href="#quote"><span class="xmas-sign-bulb" aria-hidden="true"></span><span class="xmas-sign-text">Skip the ladder. Joe's got it.</span><span class="xmas-sign-bulb is-green" aria-hidden="true"></span></a>
+    <a class="xmas-badge" href="#quote" aria-label="Skip the ladder. Joe's got it. Request your Christmas light installation quote"><span class="xmas-sign-row"><span class="xmas-sign-bulb" aria-hidden="true"></span><span class="xmas-sign-text">Skip the ladder. Joe's got it.</span><span class="xmas-sign-bulb is-green" aria-hidden="true"></span></span><span class="xmas-sign-cta"><span class="xmas-sign-cta-text">Request your Christmas light installation quote</span>&nbsp;<span aria-hidden="true">&rarr;</span></span></a>
     <!-- ===== CHRISTMAS PROMO END: badge ===== -->
     <div class="hero-eyebrow">Mabank, Texas</div>
     <h1>From the first cut to the <em>last log split.</em></h1>
