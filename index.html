@@ -432,15 +432,25 @@ img { display: block; }
       }
     });
 
-    // Shareable link: zmowslawncare.com/#christmas-lights presets the dropdown and scrolls to the form.
-    function handleHash(){
-      if (location.hash !== '#christmas-lights') return;
-      presetService();
-      var quote = document.getElementById('quote');
-      if (quote) quote.scrollIntoView();
+    // Share links: zmowslawncare.com/#christmas-lights or /?christmas (Facebook may add &fbclid=...).
+    // They preset the dropdown quietly and never scroll, so the page opens at the top with the
+    // strip and sign in view. No GA event here; select_promotion only fires from a tap on the sign.
+    var fromHash = location.hash === '#christmas-lights';
+    var fromQuery = 'URLSearchParams' in window && new URLSearchParams(location.search).has('christmas');
+    if (fromHash || fromQuery) {
+      // Stop a reload or back/forward from restoring an old mid-page position.
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      // Drop the hash so the browser has nothing to jump to. The query string (?christmas, fbclid)
+      // is left alone so analytics still sees where the visit came from.
+      if (fromHash && history.replaceState) {
+        history.replaceState(history.state, '', location.pathname + location.search);
+      }
+      document.addEventListener('DOMContentLoaded', presetService);
     }
-    document.addEventListener('DOMContentLoaded', handleHash);
-    window.addEventListener('hashchange', handleHash);
+    // Typing #christmas-lights while already on the page: same quiet preset, no scroll.
+    window.addEventListener('hashchange', function(){
+      if (location.hash === '#christmas-lights') presetService();
+    });
 
     // Pause the twinkle while the strip is scrolled off screen.
     var strip = document.querySelector('.xmas-strip');
